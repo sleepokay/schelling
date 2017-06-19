@@ -1,9 +1,7 @@
 $(document).ready(function() {
-	var state = "stop";
-
-	var rows = 10;
-	var cols = 10;
-	var empty_ratio = 0.3;
+	var rows = 100;
+	var cols = 100;
+	var empty_ratio = 0.1;
 	var similarity_threshold = 4;	// number of neighbors that are ideally the same race in 8 adjacent cells
 	var races = 2;
 
@@ -11,15 +9,15 @@ $(document).ready(function() {
 	var houses;
 	var empties;
 
+	var animate;
 	newSimulation();
-	window.setInterval(function() {
-		draw();
-	}, 100);
+	draw();
 
 function newSimulation() {
 	simulation = init(rows, cols, empty_ratio, similarity_threshold, races);
 	houses = simulation[0];
 	empties = simulation[1];
+	clearInterval(animate);
 }
 
 function init(rows, cols, empty_ratio, similarity_threshold, races = 2) {
@@ -77,9 +75,6 @@ function draw() {
 			ctx.fillRect(canvas.width/cols*c, canvas.height/rows*r, canvas.width/cols, canvas.height/rows);
     	}
     }
-
-    if (state == "run")
-    	step();
 }
 
 function step() {
@@ -109,19 +104,28 @@ function step() {
     	}
     }
 
+    // if no changes need occur, stop updating
+    if (unhappy.length == 0) {
+    	$('button#run').html("run");
+		clearInterval(animate);
+	}
+
     // iterate through queue of unhappy tenants and assign them a new home
     // then move them simultaneously to avoid adding their vacancies back in this iteration's empty houses 
     let move = new Array();
-    while (unhappy.length > 0) {
-    	let from = unhappy.pop(Math.floor(Math.random() * unhappy.length));
-		let to = empties.pop(Math.floor(Math.random() * empties.length));
+
+    while (unhappy.length > 0 && empties.length > 0) {
+    	let from = unhappy.splice(Math.floor(Math.random() * unhappy.length), 1)[0];
+		let to = empties.splice(Math.floor(Math.random() * empties.length), 1)[0];
 		move.push([from, to]);
     }
+
 
    	while (move.length > 0) {
    		let m = move.pop();
    		let from = m[0];
    		let to = m[1];
+
 		houses[to[0]][to[1]] = houses[from[0]][from[1]]; // move tenant
 		houses[from[0]][from[1]] = 0;	// set old house empty
 		empties.push([from[0], from[1]]); // push onto list of empty houses
@@ -130,19 +134,32 @@ function step() {
 
 $('button#new').click( function() {
 	newSimulation();
+	draw();
 });
 
 $('button#step').click( function() {
+	clearInterval(animate);
 	step();
+	draw();
 });
 
 $('button#run').click( function() {
+	if ($(this).html() == "run") {
+		$(this).html("stop");
+		animate = setInterval(function() {
+			step();
+			draw();
+		}, 100);
+	} 
+	else {
+		$(this).html("run");
+		clearInterval(animate);
+	}
 
-	state = "run";
 });
 
 $('button#stop').click( function() {
-	state = "stop";
+	clearInterval(animate);
 });
 
 });
