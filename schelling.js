@@ -17,6 +17,11 @@ function newSimulation() {
 	simulation = init(rows, cols, empty_ratio, similarity_threshold, races);
 	houses = simulation[0];
 	empties = simulation[1];
+
+	$('input#empty_ratio').val(empty_ratio);
+	$('input#similarity_threshold').val(similarity_threshold);
+	$('input#races').val(races);
+	
 	clearInterval(animate);
 }
 
@@ -133,6 +138,9 @@ function step() {
 }
 
 $('button#new').click( function() {
+	empty_ratio = $('input#empty_ratio').val();
+	similarity_threshold = $('input#similarity_threshold').val();
+	races = $('input#races').val();
 	newSimulation();
 	draw();
 });
