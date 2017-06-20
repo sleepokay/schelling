@@ -1,9 +1,9 @@
 $(document).ready(function() {
 	var rows = 100;
 	var cols = 100;
-	var empty_ratio = 0.1;
+	var empty_ratio = 0.2;
 	var similarity_threshold = 4;	// number of neighbors that are ideally the same race in 8 adjacent cells
-	var races = 2;
+	var races = 4;
 
 	var simulation;
 	var houses;
@@ -21,8 +21,6 @@ function newSimulation() {
 	simulation = init(rows, cols, empty_ratio, similarity_threshold, races);
 	houses = simulation[0];
 	empties = simulation[1];
-	
-	clearInterval(animate);
 }
 
 function init(rows, cols) {
@@ -71,7 +69,7 @@ function draw() {
 	var canvas = document.getElementById('space');
     var ctx = canvas.getContext('2d');
 
-	let colors = ["#CCC", "#F00", "#00F"];
+	let colors = ["#DDD", "#F00", "#00F", "#0C0", "#FF0", "#F0F", "#0FF"];
 
     for (let r = 0; r < houses.length; r++) {
     	for (let c = 0; c < houses[0].length; c++) {
@@ -110,10 +108,10 @@ function step() {
     }
 
     // if no changes need occur, stop updating
-    if (unhappy.length == 0) {
-    	$('button#run').html("run");
-		clearInterval(animate);
-	}
+	// if (unhappy.length == 0) {
+	// 		$('button#run').html("run");
+	// 		 clearInterval(animate);
+	// }
 
     // iterate through queue of unhappy tenants and assign them a new home
     // then move them simultaneously to avoid adding their vacancies back in this iteration's empty houses 
