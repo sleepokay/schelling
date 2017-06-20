@@ -69,7 +69,7 @@ function draw() {
 	var canvas = document.getElementById('space');
     var ctx = canvas.getContext('2d');
 
-	let colors = ["#DDD", "#F00", "#00F", "#0C0", "#FF0", "#F0F", "#0FF"];
+	let colors = ["#CCC", "#1D42E4", "#F02300", "#05D235", "#FFF206", "#D52FD1", "#FFA10C"];
 
     for (let r = 0; r < houses.length; r++) {
     	for (let c = 0; c < houses[0].length; c++) {
