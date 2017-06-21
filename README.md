@@ -1,4 +1,4 @@
-# Schelling Model of 
+# Schelling Model of Segregation
 
 ![alt tag](misc/intro.gif)
 
