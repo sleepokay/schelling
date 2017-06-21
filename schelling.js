@@ -10,6 +10,7 @@ $(document).ready(function() {
 	var empties;
 
 	var animate;
+	var frame;
 
 	$('input#empty_ratio').val(empty_ratio);
 	$('input#similarity_threshold').val(similarity_threshold);
@@ -21,6 +22,9 @@ function newSimulation() {
 	simulation = init(rows, cols, empty_ratio, similarity_threshold, races);
 	houses = simulation[0];
 	empties = simulation[1];
+
+
+	var frame = 0;
 }
 
 function init(rows, cols) {
@@ -69,7 +73,7 @@ function draw() {
 	var canvas = document.getElementById('space');
     var ctx = canvas.getContext('2d');
 
-	let colors = ["#CCC", "#1D42E4", "#F02300", "#05D235", "#FFF206", "#D52FD1", "#FFA10C"];
+	let colors = ["#CCC", "#1D42E4", "#F52300", "#FFF206", "#05D235", "#C52FD1", "#FFA10C"];
 
     for (let r = 0; r < houses.length; r++) {
     	for (let c = 0; c < houses[0].length; c++) {
@@ -78,6 +82,11 @@ function draw() {
 			ctx.fillRect(canvas.width/cols*c, canvas.height/rows*r, canvas.width/cols, canvas.height/rows);
     	}
     }
+
+    frame++;
+	var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+	window.location.href=image;
+
 }
 
 function step() {

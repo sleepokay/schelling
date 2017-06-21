@@ -1,4 +1,4 @@
-# Schelling Model of Segregation
+# Schelling Model of Racial Dynamics
 
 ![alt tag](misc/intro.gif)
 
